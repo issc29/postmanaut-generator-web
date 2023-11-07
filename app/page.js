@@ -149,10 +149,12 @@ export default function Home() {
           <input type="text" id="inputPrompt" name="inputPrompt" className="rounded-md w-80 text-indigo-600 border-2 border-[#E6E6E6] bg-white" onChange={handleInputPrompt} value={prompt}></input>
         </div>
 
-        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full"/>
+       
         <button className='w-32 h-12 bg-postman-orange hover:bg-postman-orange-hover rounded-md text-white disabled:bg-black mb-2'
           onClick={getImage}
           disabled={buttonDisabled}>Generate</button>
+
+<hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full"/>
 
 
         <div className='text-2xl mb-5 flex flex-col items-center'>
