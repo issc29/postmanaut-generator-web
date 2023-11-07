@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import octocat from '../static/octocat.png';
 import loading from '../static/Spinner-1s-300px.gif';
 import logo from '../static/logo.png';
+import qr from '../static/qr.png'
 
 export default function Home() {
   const [image, setImage] = useState(octocat);
@@ -142,18 +143,33 @@ export default function Home() {
             priority
           />
         </div>
-        <div className='my-2'>
+
+        <div className='flex flex-col items-center my-2'>
           <span className='mr-2'>Input Text:</span>
           <input type="text" id="inputPrompt" name="inputPrompt" className="rounded-md w-80 text-indigo-600 border-2 border-[#E6E6E6] bg-white" onChange={handleInputPrompt} value={prompt}></input>
         </div>
 
+        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full"/>
         <button className='w-32 h-12 bg-postman-orange hover:bg-postman-orange-hover rounded-md text-white disabled:bg-black mb-2'
           onClick={getImage}
           disabled={buttonDisabled}>Generate</button>
 
-        <div className=' border-2 rounded'>
+
+        <div className='text-2xl mb-5 flex flex-col items-center'>
+          <span className='text-2xl m-5'>Share this site!</span>
+          
+          <Image
+              className="border-2 rounded-md w-48"
+              src={qr}
+              alt="QR Code"
+              priority
+            />    
+          </div>
+
+          <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full"/>
+        <div className=''>
           <div className='flex flex-col items-center m-4'>
-            <span className="mb-2">Configuration</span>
+            <span className="text-2xl mb-2">Configuration</span>
             <div>
               <span>API URL: </span>
               <span className=''>{baseUrl}</span>
