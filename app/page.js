@@ -14,11 +14,10 @@ export default function Home() {
   const [apiOK, setApiOK] = useState(false)
   const [password, setPassword] = useState('');
 
-  const backendAPI = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:3000"
+  const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000"
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("get backend api url")
       const data = await fetch(backendAPI + '/api/apiurl');
       const json = await data.json();
       console.log(json)
