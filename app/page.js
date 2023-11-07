@@ -19,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       console.log("get backend api url")
-      const data = await fetch(backendAPI + '/apiurl');
+      const data = await fetch(backendAPI + '/api/apiurl');
       const json = await data.json();
       console.log(json)
       setBaseUrl(json.url)
@@ -34,7 +34,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       console.log("run")
-      const data = await fetch(baseUrl + '/status');
+      const data = await fetch(baseUrl + '/api/status');
       const json = await data.json();
       console.log(json)
       if (json.status == "ok") {
@@ -53,7 +53,7 @@ export default function Home() {
 
   async function getImage() {
     setButtonDisabled(true)
-    var url = new URL(baseUrl + "/octocat");
+    var url = new URL(baseUrl + "/api/octocat");
     var queryParams = { "prompt": prompt };
     for (let k in queryParams) { url.searchParams.append(k, queryParams[k]); }
 
@@ -72,7 +72,7 @@ export default function Home() {
   }
 
   async function handleSaveConfig() {
-    const response = await fetch(backendAPI + '/apiurl', {
+    const response = await fetch(backendAPI + '/api/apiurl', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
