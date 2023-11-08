@@ -8,7 +8,7 @@ import qr from '../static/qr.png'
 
 export default function Home() {
   const [image, setImage] = useState(octocat);
-  const [baseUrl, setBaseUrl] = useState('https://838eded7-9c7e-4fbe-b85f-73e3e7a775d4.mock.pstmn.io');
+  const [baseUrl, setBaseUrl] = useState('https://localhost:3000');
   const [inputBaseUrl, setInputBaseUrl] = useState('https://838eded7-9c7e-4fbe-b85f-73e3e7a775d4.mock.pstmn.io');
   const [prompt, setPrompt] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -174,20 +174,22 @@ export default function Home() {
             <span className="text-2xl mb-2">Configuration</span>
             <div>
               <span>API URL: </span>
-              <span className=''>{baseUrl}</span>
+              <select 
+              className='border-2 rounded-md w-48'
+              id="apiUrl"
+              value={baseUrl} 
+              onChange={e => setBaseUrl(e.target.value)}>
+              <option value="https://localhost:3000">Local</option>
+              <option value="https://838eded7-9c7e-4fbe-b85f-73e3e7a775d4.mock.pstmn.io">Mock</option>
+              <option value="https://universe23-api.vercel.app">Production</option>
+            </select>
             </div>
             <div>
-              <span>API URL: </span>
-              <input type="text" id="api_url" name="api_url" className="rounded-md w-80  text-indigo-600 border-2 border-[#E6E6E6] bg-white" onChange={handleInputBaseUrlChange} value={inputBaseUrl}></input>
+            
+
+
             </div>
-            <div>
-              <span>Password: </span>
-              <input type="password" id="password" name="password" className="rounded-md w-80  text-indigo-600 border-2 border-[#E6E6E6] bg-white" onChange={handlePasswordChange} value={password}></input>
-            </div>
-            <button
-              className='mt-2 w-32 h-12 bg-postman-orange rounded-md hover:bg-postman-orange-hover disabled:bg-black text-white'
-              onClick={handleSaveConfig}
-              disabled={buttonDisabled}>Save</button>
+
           </div>
         </div>
       </div>
