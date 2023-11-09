@@ -195,7 +195,7 @@ export default function Home() {
                 value={baseUrl}
                 onChange={e => setBaseUrl(e.target.value)}>
                 <option value="http://localhost:3000">Local</option>
-                <option value="https://02160ba8-f74c-42ae-b8ce-3496bc6e111c.mock.pstmn.io">Mock</option>
+                <option value="https://61c8ad19-c2a0-4f78-971f-b8720daffbd9.mock.pstmn.io">Mock</option>
                 <option value="https://universe23-api.vercel.app">Production</option>
               </select>
             </div>
