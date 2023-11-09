@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState, useEffect } from 'react';
 import octocat from '../static/octocat.png';
 import loading from '../static/Spinner-1s-300px.gif';
@@ -108,6 +109,7 @@ export default function Home() {
 
       <nav className='p-2 w-full'>
         <div className='flex-wrap flex'>
+        <Link href="https://www.postman.com/" target="_blank">
           <Image
             className=""
             src={logo}
@@ -115,6 +117,7 @@ export default function Home() {
             height={75}
             priority
           />
+        </Link>
         </div>
       </nav>
 
@@ -149,46 +152,57 @@ export default function Home() {
           <input type="text" id="inputPrompt" name="inputPrompt" className="rounded-md w-80 text-indigo-600 border-2 border-[#E6E6E6] bg-white" onChange={handleInputPrompt} value={prompt}></input>
         </div>
 
-       
+
         <button className='w-32 h-12 bg-postman-orange hover:bg-postman-orange-hover rounded-md text-white disabled:bg-black mb-2'
           onClick={getImage}
           disabled={buttonDisabled}>Generate</button>
 
-<hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full"/>
+        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
 
 
         <div className='text-2xl mb-5 flex flex-col items-center'>
           <span className='text-2xl m-5'>Share this site!</span>
-          
-          <Image
-              className="border-2 rounded-md w-48"
-              src={qr}
-              alt="QR Code"
-              priority
-            />    
-          </div>
 
-          <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full"/>
+          <Image
+            className="border-2 rounded-md w-48"
+            src={qr}
+            alt="QR Code"
+            priority
+          />
+        </div>
+
+        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
+        <Link 
+          href="https://www.postman.com/postman/workspace/github-universe-2023/collection/21803327-c32672df-2561-4565-83e9-1cf86107ded2"
+          className='text-xl text-postman-orange hover:text-postman-orange-hover'
+          target="_blank">
+            Postman Workspace
+        </Link>  
+        <Link 
+          href="https://documenter.getpostman.com/view/21803327/2s9YXiYLtH"
+          className='text-xl text-postman-orange hover:text-postman-orange-hover'
+          target="_blank">
+            Documentation
+        </Link>         
+
+        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
         <div className=''>
           <div className='flex flex-col items-center m-4'>
             <span className="text-2xl mb-2">Configuration</span>
             <div>
               <span>API URL: </span>
-              <select 
-              className='border-2 rounded-md w-48'
-              id="apiUrl"
-              value={baseUrl} 
-              onChange={e => setBaseUrl(e.target.value)}>
-              <option value="https://localhost:3000">Local</option>
-              <option value="https://838eded7-9c7e-4fbe-b85f-73e3e7a775d4.mock.pstmn.io">Mock</option>
-              <option value="https://universe23-api.vercel.app">Production</option>
-            </select>
+              <select
+                className='border-2 rounded-md w-48'
+                id="apiUrl"
+                value={baseUrl}
+                onChange={e => setBaseUrl(e.target.value)}>
+                <option value="https://localhost:3000">Local</option>
+                <option value="https://838eded7-9c7e-4fbe-b85f-73e3e7a775d4.mock.pstmn.io">Mock</option>
+                <option value="https://universe23-api.vercel.app">Production</option>
+              </select>
             </div>
-            <div>
+
             
-
-
-            </div>
 
           </div>
         </div>
