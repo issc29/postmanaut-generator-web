@@ -14,37 +14,26 @@ export default function Home() {
   const [prompt, setPrompt] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false)
   const [apiOK, setApiOK] = useState(false)
+  const [imageError, setImageError] = useState(false)
   const [password, setPassword] = useState('');
 
   const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000"
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetch(backendAPI + '/api/apiurl');
-      const json = await data.json();
-      console.log(json)
-      setBaseUrl(json.url)
-    }
-
-    fetchData()
-      .catch(console.error);;
-
-  }, []);
 
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("run")
-      const data = await fetch(baseUrl + '/api/status');
-      const json = await data.json();
-      console.log(json)
-      if (json.status == "ok") {
-        setApiOK(true)
-        console.log(apiOK)
-      } else {
+      try {
+        const data = await fetch(baseUrl + '/api/status');
+        const json = await data.json();
+        if (json.status == "ok") {
+          setApiOK(true)
+        } else {
+          setApiOK(false)
+        }
+      } catch(e){
         setApiOK(false)
       }
-      console.log(apiOK)
     }
 
     fetchData()
@@ -53,21 +42,25 @@ export default function Home() {
   }, [baseUrl]);
 
   async function getImage() {
+    setImageError(false)
     setButtonDisabled(true)
     var url = new URL(baseUrl + "/api/octocat");
     var queryParams = { "prompt": prompt };
     for (let k in queryParams) { url.searchParams.append(k, queryParams[k]); }
 
-    const response = await fetch(url, {
-      method: 'GET',
-
-    });
-    console.log(response)
-    const data = await response.json();
-    console.log(data)
-    console.log(data.data[0].b64_json)
-    const base64 = data.data[0].b64_json
-    setImage(`data:image/jpeg;base64, ${base64}`)
+    try{
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+      
+      const data = await response.json();
+      const base64 = data.data[0].b64_json
+      setImage(`data:image/jpeg;base64, ${base64}`)
+    }
+  catch(e) {
+    setButtonDisabled(false)
+    setImageError(true)
+  }
     setButtonDisabled(false)
 
   }
@@ -127,7 +120,7 @@ export default function Home() {
           <span className='text-2xl mr-2'>API Status:</span>
           <span className={`text-2xl ${apiOK ? "text-green-600" : "text-red-600"}`}>{apiOK ? "API Working" : "API not working! :-("}</span>
         </div>
-        <div className='relative inline'>
+        <div className='relative inline h-[300px]'>
 
           <Image
             className="border-2 rounded-md"
@@ -145,6 +138,11 @@ export default function Home() {
             height={300}
             priority
           />
+          <div
+            className={`absolute bottom-0 right-0 opacity-80  bg-[#f1f2f3] flex  justify-items-center items-center w-[300px] h-[300px] ${imageError ? "" : "hidden"}`}
+          >
+            <div className='text-center text-2xl justify-center w-full'>Error fetching Image!</div>
+          </div>
         </div>
 
         <div className='flex flex-col items-center my-2'>
@@ -157,7 +155,7 @@ export default function Home() {
           onClick={getImage}
           disabled={buttonDisabled}>Generate</button>
 
-        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
+        <hr className="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
 
 
         <div className='text-2xl mb-5 flex flex-col items-center'>
@@ -171,7 +169,7 @@ export default function Home() {
           />
         </div>
 
-        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
+        <hr className="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
         <Link 
           href="https://www.postman.com/postman/workspace/github-universe-2023/collection/21803327-c32672df-2561-4565-83e9-1cf86107ded2"
           className='text-xl text-postman-orange hover:text-postman-orange-hover'
@@ -185,7 +183,7 @@ export default function Home() {
             Documentation
         </Link>         
 
-        <hr class="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
+        <hr className="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
         <div className=''>
           <div className='flex flex-col items-center m-4'>
             <span className="text-2xl mb-2">Configuration</span>
