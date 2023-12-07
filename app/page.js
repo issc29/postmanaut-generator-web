@@ -2,22 +2,25 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react';
-import octocat from '../static/octocat.png';
+import postmanaut from '../static/postmanaut.png';
 import loading from '../static/Spinner-1s-300px.gif';
 import logo from '../static/logo.png';
 import qr from '../static/qr.png'
 
 export default function Home() {
-  const [image, setImage] = useState(octocat);
-  const [baseUrl, setBaseUrl] = useState('https://localhost:3000');
-  const [inputBaseUrl, setInputBaseUrl] = useState('https://838eded7-9c7e-4fbe-b85f-73e3e7a775d4.mock.pstmn.io');
+  const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000"
+  const mockAPI = process.env.NEXT_MOCK_BACKEND_API_URL || "http://localhost:3000"
+  const prodAPI = process.env.NEXT_PROD_BACKEND_API_URL || "http://localhost:3000"
+
+  const [image, setImage] = useState(postmanaut);
+  const [baseUrl, setBaseUrl] = useState(backendAPI);
+  const [inputBaseUrl, setInputBaseUrl] = useState(mockAPI);
   const [prompt, setPrompt] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false)
   const [apiOK, setApiOK] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [password, setPassword] = useState('');
-
-  const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000"
+  const [openAPIKey, setOpenAPIKey] = useState('');
 
 
 
@@ -44,13 +47,17 @@ export default function Home() {
   async function getImage() {
     setImageError(false)
     setButtonDisabled(true)
-    var url = new URL(baseUrl + "/api/octocat");
-    var queryParams = { "prompt": prompt };
-    for (let k in queryParams) { url.searchParams.append(k, queryParams[k]); }
+    var url = new URL(baseUrl + "/api/postmanaut");
 
     try{
       const response = await fetch(url, {
-        method: 'GET',
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${openAPIKey}`
+        },
+        body: JSON.stringify({ prompt: prompt })
       });
       
       const data = await response.json();
@@ -96,6 +103,10 @@ export default function Home() {
     setPrompt(e.target.value);
   }
 
+  function handleSetOpenAPIKey(e) {
+    setOpenAPIKey(e.target.value);
+  }
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between  bg-postman-gray text-black">
@@ -115,7 +126,7 @@ export default function Home() {
       </nav>
 
       <div className='py-12 flex flex-col items-center'>
-        <h1 className='text-4xl sm:text-5xl'>Octocat Generator</h1>
+        <h1 className='text-4xl sm:text-5xl'>Postmanaut Generator</h1>
         <div className='flex'>
           <span className='text-2xl mr-2'>API Status:</span>
           <span className={`text-2xl ${apiOK ? "text-green-600" : "text-red-600"}`}>{apiOK ? "API Working" : "API not working! :-("}</span>
@@ -125,7 +136,7 @@ export default function Home() {
           <Image
             className="border-2 rounded-md"
             src={image}
-            alt="Octocat"
+            alt="Postmanaut"
             width={300}
             height={300}
             priority
@@ -194,14 +205,15 @@ export default function Home() {
                 id="apiUrl"
                 value={baseUrl}
                 onChange={e => setBaseUrl(e.target.value)}>
-                <option value="http://localhost:3000">Local</option>
-                <option value="https://61c8ad19-c2a0-4f78-971f-b8720daffbd9.mock.pstmn.io">Mock</option>
-                <option value="https://universe23-api.vercel.app">Production</option>
+                <option value={backendAPI}>Local</option>
+                <option value={mockAPI}>Mock</option>
+                <option value={prodAPI}>Production</option>
               </select>
             </div>
-
-            
-
+            <div>
+              <span>OpenAI Key: </span>
+              <input type="password" id="openAPIKey" name="openAPIKey" className="rounded-md w-80 text-indigo-600 border-2 border-[#E6E6E6] bg-white" onChange={handleSetOpenAPIKey} value={openAPIKey}></input>
+            </div>
           </div>
         </div>
       </div>
