@@ -61,7 +61,7 @@ export default function Home() {
       });
       
       const data = await response.json();
-      const base64 = data.data[0].b64_json
+      const base64 = data.data
       setImage(`data:image/jpeg;base64, ${base64}`)
     }
   catch(e) {
