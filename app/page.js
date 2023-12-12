@@ -19,6 +19,7 @@ export default function Home() {
   const [buttonDisabled, setButtonDisabled] = useState(false)
   const [apiOK, setApiOK] = useState(false)
   const [imageError, setImageError] = useState(false)
+  const [imageErrorText, setImageErrorText] = useState("Error fetching Image!")
   const [password, setPassword] = useState('');
   const [openAPIKey, setOpenAPIKey] = useState('');
 
@@ -61,11 +62,24 @@ export default function Home() {
       });
       
       const data = await response.json();
-      const base64 = data.data
-      setImage(`data:image/jpeg;base64, ${base64}`)
+      if ("error" in data) {
+        if(data.error == "Unauthorized") {
+          setImageErrorText("Error: OpenAI Auth Failed, set key below!")
+          setImageError(true)
+        }
+        else {
+          setImageErrorText("Error fetching Image!")
+          setImageError(true)
+        }
+      }
+      else {
+        const base64 = data.data
+        setImage(`data:image/jpeg;base64, ${base64}`)
+      }
     }
   catch(e) {
     setButtonDisabled(false)
+    setImageErrorText("Error fetching Image!")
     setImageError(true)
   }
     setButtonDisabled(false)
@@ -152,7 +166,7 @@ export default function Home() {
           <div
             className={`absolute bottom-0 right-0 opacity-80  bg-[#f1f2f3] flex  justify-items-center items-center w-[300px] h-[300px] ${imageError ? "" : "hidden"}`}
           >
-            <div className='text-center text-2xl justify-center w-full'>Error fetching Image!</div>
+            <div className='text-center text-2xl justify-center w-full'>{imageErrorText}</div>
           </div>
         </div>
 
@@ -182,13 +196,13 @@ export default function Home() {
 
         <hr className="h-px my-8 bg-neutral-700 rounded-md border-2 w-full" />
         <Link 
-          href="https://www.postman.com/postman/workspace/github-universe-2023/collection/21803327-c32672df-2561-4565-83e9-1cf86107ded2"
+          href="https://www.postman.com/postman/workspace/postmanaut-generator/overview"
           className='text-xl text-postman-orange hover:text-postman-orange-hover'
           target="_blank">
             Postman Workspace
         </Link>  
         <Link 
-          href="https://documenter.getpostman.com/view/21803327/2s9YXiYLtH"
+          href=""
           className='text-xl text-postman-orange hover:text-postman-orange-hover'
           target="_blank">
             Documentation
